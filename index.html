@@ -12,22 +12,22 @@
             images: {type: 'array', default: ['escena-1.JPG', 'escena-2.JPG', 'escena-3.JPG', 'escena-4.JPG', 'escena-5.JPG', 'escena-6.JPG','video-1.MP4']}
           },
           init: function () {
-            this.currentIndex = 0; // Inicializa el índice de la imagen actual
-            this.updateSky(); // Asegúrate de inicializar el cielo
+            this.currentIndex = 0; 
+            this.updateSky()
           },
           nextScene: function () {
-            this.currentIndex = (this.currentIndex + 1) % this.data.images.length; // Calcula el siguiente índice de forma cíclica
+            this.currentIndex = (this.currentIndex + 1) % this.data.images.length;
             this.updateSky();
           },
           previousScene: function () {
-            this.currentIndex = (this.currentIndex - 1 + this.data.images.length) % this.data.images.length; // Calcula el índice anterior de forma cíclica
+            this.currentIndex = (this.currentIndex - 1 + this.data.images.length) % this.data.images.length;
             this.updateSky();
           },
           updateSky: function () {
-            var sky = document.querySelector('a-sky'); // Encuentra el elemento a-sky
-            sky.setAttribute('src', this.data.images[this.currentIndex]); // Cambia la imagen del fondo
+            var sky = document.querySelector('a-sky'); 
+            sky.setAttribute('src', this.data.images[this.currentIndex]); 
           }
-        });
+        })
 
         function boton_derecha() {
           var sceneEntity = document.querySelector('[scene-switcher]');
