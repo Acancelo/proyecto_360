@@ -1,1 +1,63 @@
-<iframe src="https://skybox.blockadelabs.com/e/035a339b002ebe46ba546c6032462a53" width=700 height=700 style="border:0;" allow="fullscreen"></iframe>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+    <title>Proyecto 360º</title>
+    <script>
+        AFRAME.registerComponent('scene-switcher', {
+          schema: {
+            images: {type: 'array', default: ['escena-1.JPG', 'escena-2.JPG', 'escena-3.JPG', 'escena-4.JPG', 'escena-5.JPG', 'escena-6.JPG','video-1.MP4']}
+          },
+          init: function () {
+            this.currentIndex = 0; // Inicializa el índice de la imagen actual
+            this.updateSky(); // Asegúrate de inicializar el cielo
+          },
+          nextScene: function () {
+            this.currentIndex = (this.currentIndex + 1) % this.data.images.length; // Calcula el siguiente índice de forma cíclica
+            this.updateSky();
+          },
+          previousScene: function () {
+            this.currentIndex = (this.currentIndex - 1 + this.data.images.length) % this.data.images.length; // Calcula el índice anterior de forma cíclica
+            this.updateSky();
+          },
+          updateSky: function () {
+            var sky = document.querySelector('a-sky'); // Encuentra el elemento a-sky
+            sky.setAttribute('src', this.data.images[this.currentIndex]); // Cambia la imagen del fondo
+          }
+        });
+
+        function boton_derecha() {
+          var sceneEntity = document.querySelector('[scene-switcher]');
+          if (sceneEntity) {
+            sceneEntity.components['scene-switcher'].nextScene();
+          }
+        }
+
+        function boton_izquierda() {
+          var sceneEntity = document.querySelector('[scene-switcher]');
+          if (sceneEntity) {
+            sceneEntity.components['scene-switcher'].previousScene();
+          }
+        }
+    </script>
+</head>
+<body>
+    <div class="boton-derecha">
+        <button onclick="boton_derecha()" class="boton-next">🡲</button>
+    </div>
+
+    <div class="boton-izquierda">
+        <button onclick="boton_izquierda()" class="boton-next">🡰</button>
+    </div>
+
+    <div class="div2">
+        <a-scene class="escena">
+            <a-entity scene-switcher></a-entity>
+            <a-sky src="escena-2.JPG" rotation="0 -130 0"></a-sky>
+        </a-scene>
+    </div>
+</body>
+</html>

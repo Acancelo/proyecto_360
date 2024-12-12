@@ -1,3 +1,2 @@
 # proyecto_360
-
-<iframe src="https://skybox.blockadelabs.com/e/035a339b002ebe46ba546c6032462a53" width=700 height=700 style="border:0;" allow="fullscreen"></iframe>
+https://images.blockadelabs.com/images/imagine/M3_UHD_Render_equirectangular-jpg_streetview_in_a_Steampunk_1751065875_12638368.jpg?ver=1
