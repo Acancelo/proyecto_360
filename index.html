@@ -5,15 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
-    <title>Proyecto 360 º</title>
+    <script src="https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+    <title>Proyecto 360º</title>
     <script>
         AFRAME.registerComponent('scene-switcher', {
           schema: {
-            images: {type: 'array', default: [ 'escena-2.JPG', 'escena-3.JPG', 'escena-4.JPG', 'escena-5.JPG', 'escena-6.JPG','video-1.MP4']}
+            images: {type: 'array', default: ['escena-2.JPG', 'escena-3.JPG', 'escena-4.JPG', 'escena-5.JPG', 'escena-6.JPG', 'video-1.MP4']}
           },
           init: function () {
-            this.currentIndex = 0; 
-            this.updateSky()
+            this.currentIndex = 0; // Índice inicial
+            this.updateSky(); // Carga la primera escena
+            
+            // Configurar control de VR con botones
+            this.el.addEventListener('abuttondown', this.nextScene.bind(this)); // Botón "A" del mando VR
+            this.el.addEventListener('bbuttondown', this.previousScene.bind(this)); // Botón "B" del mando VR
           },
           nextScene: function () {
             this.currentIndex = (this.currentIndex + 1) % this.data.images.length;
@@ -24,11 +30,40 @@
             this.updateSky();
           },
           updateSky: function () {
-            var sky = document.querySelector('a-sky'); 
-            sky.setAttribute('src', this.data.images[this.currentIndex]); 
-          }
-        })
+            var currentSrc = this.data.images[this.currentIndex];
+            var sky = document.querySelector('a-sky');
+            var scene = document.querySelector('a-scene');
+            
+            // Manejar imágenes y videos
+            if (currentSrc.endsWith('.MP4')) {
+                let videoEntity = document.createElement('a-video');
+                videoEntity.setAttribute('src', currentSrc);
+                // videoEntity.setAttribute('loop', 'true');
+                // videoEntity.setAttribute('autoplay', 'true');
+                // videoEntity.setAttribute('position', '0 1.6 -4');
+                // videoEntity.setAttribute('width', '16');
+                // videoEntity.setAttribute('height', '9');
 
+                // Eliminar el sky actual y agregar el video
+                if (sky) scene.removeChild(sky);
+                let existingVideo = scene.querySelector('a-video');
+                if (existingVideo) scene.removeChild(existingVideo);
+                scene.appendChild(videoEntity);
+            } else {
+                // Eliminar a-video si existe y volver a agregar a-sky
+                let existingVideo = scene.querySelector('a-video');
+                if (existingVideo) scene.removeChild(existingVideo);
+
+                if (!sky) {
+                    sky = document.createElement('a-sky');
+                    scene.appendChild(sky);
+                }
+                sky.setAttribute('src', currentSrc);
+            }
+          }
+        });
+
+        // Funciones para los botones de la interfaz HTML
         function boton_derecha() {
           var sceneEntity = document.querySelector('[scene-switcher]');
           if (sceneEntity) {
@@ -45,6 +80,7 @@
     </script>
 </head>
 <body>
+    <!-- Botones en la interfaz HTML -->
     <div class="boton-derecha">
         <button onclick="boton_derecha()" class="boton-next">🡲</button>
     </div>
@@ -53,9 +89,13 @@
         <button onclick="boton_izquierda()" class="boton-next">🡰</button>
     </div>
 
+    <!-- Escena principal de A-Frame -->
     <div class="div2">
         <a-scene class="escena">
-            <a-entity scene-switcher></a-entity>
+            <!-- Controles para mando VR -->
+            <a-entity oculus-touch-controls="hand: right" scene-switcher></a-entity>
+
+            <!-- Primera escena inicial -->
             <a-sky src="escena-2.JPG" rotation="0 -130 0"></a-sky>
         </a-scene>
     </div>
