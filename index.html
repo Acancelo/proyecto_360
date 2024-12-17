@@ -9,7 +9,7 @@
     <script>
         AFRAME.registerComponent('scene-switcher', {
           schema: {
-            images: {type: 'array', default: ['escena-1.JPG', 'escena-2.JPG', 'escena-3.JPG', 'escena-4.JPG', 'escena-5.JPG', 'escena-6.JPG','video-1.MP4']}
+            images: {type: 'array', default: [ 'escena-2.JPG', 'escena-3.JPG', 'escena-4.JPG', 'escena-5.JPG', 'escena-6.JPG','video-1.MP4']}
           },
           init: function () {
             this.currentIndex = 0; 
@@ -56,7 +56,7 @@
     <div class="div2">
         <a-scene class="escena">
             <a-entity scene-switcher></a-entity>
-            <a-sky src="escena-2.JPG" rotation="0 -130 0"></a-sky>
+            <a-sky src="escena-1.JPG" rotation="0 -130 0"></a-sky>
         </a-scene>
     </div>
 </body>
